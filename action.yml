@@ -1,0 +1,38 @@
+# ecr-login/action.yml
+name: 'test-automation'
+description: 'Test Automation'
+
+inputs:
+  testing-tool:
+    description: 'testing-tool'
+    required: true
+  testcase:
+    description: "testcase"
+    required: true
+  env:
+    description: 'Environment `prod`, `stg`'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Checkout test collections
+      uses: actions/checkout@v3
+      with:
+        repository: 'Hyunju-Sung/test-collections-repo'
+        path: 'test-collections'
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+      if: ${{ inputs.testcase == 'postman'}}
+
+    - name: Run API tests
+      run: |
+        npm install -g newman
+        newman run test-collections/${{ inputs.testcase }}
+      shell: bash
+      if: ${{ inputs.testcase == 'postman'}}
