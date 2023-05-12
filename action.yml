@@ -24,7 +24,7 @@ runs:
     - name: Checkout test collections
       uses: actions/checkout@v3
       with:
-        repository: 'Hyunju-Sung/actions-test-collections-repo'
+        repository: 'Hyunju-Sung/test-collections-repo'
         path: 'test-collections'
 
     - name: Run API tests
