@@ -33,9 +33,14 @@ runs:
         node-version: '14'
       if: ${{ inputs.testing-tool == 'postman'}}
 
-    - name: Run API tests
+    - name: Install newman
       run: |
         npm install -g newman --silent
-        newman run test-collections/${{ inputs.pm-collection }} -e test-collections/${{ inputs.pm-env }} -r progress
+      shell: bash
+      if: ${{ inputs.testing-tool == 'postman'}}
+
+    - name: Run API tests
+      run: |
+        newman run test-collections/${{ inputs.pm-collection }} -e test-collections/${{ inputs.pm-env }} -r cli,emojitrain
       shell: bash
       if: ${{ inputs.testing-tool == 'postman'}}
