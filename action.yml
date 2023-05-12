@@ -27,9 +27,15 @@ runs:
         repository: 'Hyunju-Sung/test-collections-repo'
         path: 'test-collections'
 
-    - name: Run API tests
-      uses: matt-ball/newman-action@master
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
       with:
-        collection: test-collections/${{ inputs.pm-collection }}
-        environment: test-collections/${{ inputs.pm-env }}
+        node-version: '14'
+      if: ${{ inputs.testing-tool == 'postman'}}
+
+    - name: Run API tests
+      run: |
+        npm install -g newman
+        newman run test-collections/${{ inputs.testcase }} -e test-collections/${{ inputs.pm-env }}
+      shell: bash
       if: ${{ inputs.testing-tool == 'postman'}}
