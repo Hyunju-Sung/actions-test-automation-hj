@@ -6,8 +6,11 @@ inputs:
   testing-tool:
     description: 'testing-tool'
     required: true
-  testcase:
-    description: "testcase"
+  pm-collection:
+    description: "postman collection"
+    required: true
+  pm-env:
+    description: "postman env"
     required: true
   env:
     description: 'Environment `prod`, `stg`'
@@ -21,18 +24,12 @@ runs:
     - name: Checkout test collections
       uses: actions/checkout@v3
       with:
-        repository: 'Hyunju-Sung/test-collections-repo'
+        repository: 'Hyunju-Sung/actions-test-collections-repo'
         path: 'test-collections'
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-      if: ${{ inputs.testing-tool == 'postman'}}
-
     - name: Run API tests
-      run: |
-        npm install -g newman
-        newman run test-collections/${{ inputs.testcase }}
-      shell: bash
+      uses: matt-ball/newman-action@master
+      with:
+        collection: test-collections/${{ inputs.pm-collection }}
+        environment: test-collections/${{ inputs.pm-env }}
       if: ${{ inputs.testing-tool == 'postman'}}
