@@ -36,6 +36,6 @@ runs:
     - name: Run API tests
       run: |
         npm install -g newman --silent
-        newman run test-collections/${{ inputs.pm-collection }} -e test-collections/${{ inputs.pm-env }} -r emojitrain,progress
+        newman run test-collections/${{ inputs.pm-collection }} -e test-collections/${{ inputs.pm-env }} -r progress
       shell: bash
       if: ${{ inputs.testing-tool == 'postman'}}
